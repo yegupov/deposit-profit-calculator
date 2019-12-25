@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <title>Deposit profit calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/app.min.css">
+</head>
+
+<body>
+    <section class="plans__section">
+        <h2 class="section-title">Сделайте вклад и получите прибыль до 17%!</h2>
+        <p class="secondary-text">Выберите индивидуальный план вклада и узнайте размер прибыли!</p>
+        <ul class="plans__list">
+            <li class="plans__item" data-plan="calculator" data-payload="{&quot;title&quot;:&quot;Bacon&quot;,&quot;minInvest&quot;:999,&quot;maxInvest&quot;:4135,&quot;profit&quot;:0.09,&quot;bodyReturn&quot;:false,&quot;minDuration&quot;:22,&quot;maxDuration&quot;:87}" v-cloak>
+                <div class="plan">
+                    <div class="plan__header">
+                        <h3>{{plan.title}}</h3>
+                    </div>
+                    <div class="plan__desc">
+                        <div class="plan__row">
+                            <div class="plan__feature"><span>Минимальный</span></div>
+                            <div class="plan__value">${{plan.minInvest}}</div>
+                        </div>
+                        <div class="plan__row">
+                            <div class="plan__feature"><span>Максимальный</span></div>
+                            <div class="plan__value">${{plan.maxInvest}}</div>
+                        </div>
+                        <div class="plan__row">
+                            <div class="plan__feature"><span>Прибыль</span></div>
+                            <div class="plan__value">{{plan.profit}}%</div>
+                        </div>
+                        <div class="plan__row">
+                            <div class="plan__feature"><span>Возврат тела</span></div>
+                            <div class="plan__value" v-if="plan.bodyReturn">Да</div>
+                            <div class="plan__value" v-else>Нет</div>
+                        </div>
+                        <div class="plan__slider">
+                            <div class="plan__row">
+                                <div class="plan__feature"><span>Срок работы</span></div>
+                                <div class="plan__value">{{planTerm}} дней</div>
+                            </div>
+                            <div class="plan__slider-input">
+                                <div class="plan__slider-value">{{plan.minDuration}}</div><input class="plan__slider-range e-range" type="range" :min="plan.minDuration" :max="plan.maxDuration" step="1" v-model="planTerm">
+                                <div class="plan__slider-value">{{plan.maxDuration}}</div>
+                            </div>
+                        </div>
+                        <div class="plan__deposit">
+                            <div class="plan__row">
+                                <div class="plan__feature"><span>Вклад в $</span></div>
+                                <div class="plan__value"><input class="plan__deposit-input" type="number" :min="plan.minInvest" :max="plan.maxInvest" step="1" v-model.number="deposit">
+                                    <p class="small-text" v-if="isDepositCorrect">Сумма вклада корректна</p>
+                                    <p class="small-text" v-else>*Введите корректную сумму</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="plan__profit">
+                            <h4>Суммарная прибыль составит:</h4>
+                            <div class="plan__profit-input" v-if="isDepositCorrect">${{totalProfit}}</div>
+                            <div class="plan__profit-input" v-else>$0</div>
+                        </div><input class="plan__consent" type="checkbox" v-model="isRulesAccepted"><label class="plan__consent-label">Согласен с <a href="#">правилами</a></label><button class="btn" type="submit" :disabled="someFieldsIncorrect" @click="makeDeposit">Инвестировать</button>
+                        <p class="small-text" v-if="someFieldsIncorrect">*Введите корректную сумму и согласитесь с правилами.</p>
+                        <p class="small-text" v-else>Нажмите кнопку, чтобы сделать вклад и получить ${{totalProfit}} прибыли!</p>
+                    </div>
+                </div>
+            </li>
+            <li class="plans__item" data-plan="calculator" data-payload="{&quot;title&quot;:&quot;Bacon&quot;,&quot;minInvest&quot;:707,&quot;maxInvest&quot;:8045,&quot;profit&quot;:0.01,&quot;bodyReturn&quot;:true,&quot;minDuration&quot;:16,&quot;maxDuration&quot;:98}" v-cloak>
+                <div class="plan">
+                    <div class="plan__header">
+                        <h3>{{plan.title}}</h3>
+                    </div>
+                    <div class="plan__desc">
+                        <div class="plan__row">
+                            <div class="plan__feature"><span>Минимальный</span></div>
+                            <div class="plan__value">${{plan.minInvest}}</div>
+                        </div>
+                        <div class="plan__row">
+                            <div class="plan__feature"><span>Максимальный</span></div>
+                            <div class="plan__value">${{plan.maxInvest}}</div>
+                        </div>
+                        <div class="plan__row">
+                            <div class="plan__feature"><span>Прибыль</span></div>
+                            <div class="plan__value">{{plan.profit}}%</div>
+                        </div>
+                        <div class="plan__row">
+                            <div class="plan__feature"><span>Возврат тела</span></div>
+                            <div class="plan__value" v-if="plan.bodyReturn">Да</div>
+                            <div class="plan__value" v-else>Нет</div>
+                        </div>
+                        <div class="plan__slider">
+                            <div class="plan__row">
+                                <div class="plan__feature"><span>Срок работы</span></div>
+                                <div class="plan__value">{{planTerm}} дней</div>
+                            </div>
+                            <div class="plan__slider-input">
+                                <div class="plan__slider-value">{{plan.minDuration}}</div><input class="plan__slider-range e-range" type="range" :min="plan.minDuration" :max="plan.maxDuration" step="1" v-model="planTerm">
+                                <div class="plan__slider-value">{{plan.maxDuration}}</div>
+                            </div>
+                        </div>
+                        <div class="plan__deposit">
+                            <div class="plan__row">
+                                <div class="plan__feature"><span>Вклад в $</span></div>
+                                <div class="plan__value"><input class="plan__deposit-input" type="number" :min="plan.minInvest" :max="plan.maxInvest" step="1" v-model.number="deposit">
+                                    <p class="small-text" v-if="isDepositCorrect">Сумма вклада корректна</p>
+                                    <p class="small-text" v-else>*Введите корректную сумму</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="plan__profit">
+                            <h4>Суммарная прибыль составит:</h4>
+                            <div class="plan__profit-input" v-if="isDepositCorrect">${{totalProfit}}</div>
+                            <div class="plan__profit-input" v-else>$0</div>
+                        </div><input class="plan__consent" type="checkbox" v-model="isRulesAccepted"><label class="plan__consent-label">Согласен с <a href="#">правилами</a></label><button class="btn" type="submit" :disabled="someFieldsIncorrect" @click="makeDeposit">Инвестировать</button>
+                        <p class="small-text" v-if="someFieldsIncorrect">*Введите корректную сумму и согласитесь с правилами.</p>
+                        <p class="small-text" v-else>Нажмите кнопку, чтобы сделать вклад и получить ${{totalProfit}} прибыли!</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <div class="popup">
+        <div class="overlay"></div>
+        <div class="popup__window">
+            <h3>Поздравляем!</h3>
+            <p class="red-text large-text">Вы успешно инвестировали.</p>
+            <p><b>Спасибо за вклад!</b></p>
+            <div class="popup__btn-close">× </div>
+        </div>
+    </div>
+    <script src="script/app.min.js"></script>
+</body>
+
+</html>
