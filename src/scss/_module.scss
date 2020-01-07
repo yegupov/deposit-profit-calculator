@@ -24,15 +24,35 @@
   box-shadow: 0 0 20px 0 rgba(0,0,0,0.15);
   color: #f72416;
   .plan__header {
-    padding: 20px 0;
+    @extend %flexbox;
+    padding: 20px 10%;
     border-radius: 20px 20px 0 0;
     background-color: #f72416;
-    h3 {
-      margin-bottom: 0;
-      text-align: center;
-      font-size: 1.8rem;
-      text-transform: uppercase;
-      color: #fff;
+    color: #fff;
+    .plan__title {
+      h3 {
+        margin-bottom: 0;
+        text-align: center;
+        font-size: 1.8rem;
+        text-transform: uppercase;
+      }
+    }
+    .plan__currencies {
+      input {
+        display: none;
+      }
+      .plan__currency {
+        font-size: 1.7rem;
+        color: #ffc9c9;
+        cursor: pointer;
+        &:first-child {
+          margin-right: 10px;
+          font-size: 1.9rem;
+        }
+        &.selected {
+          color: #fff;
+        }
+      }
     }
   }
   .plan__desc {
@@ -135,7 +155,7 @@
   }
   .plan__profit-input {
     margin: 0 auto;
-    width: 100px;
+    width: auto;
     font-size: 2.2rem;
     font-weight: 600;
     padding: 0;

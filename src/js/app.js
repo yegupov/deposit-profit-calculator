@@ -1,38 +1,65 @@
 import Vue from "vue";
 
 document.querySelectorAll('[data-plan="calculator"]').forEach(el => {
-  const plan = JSON.parse(el.getAttribute('data-payload'));
+
+  const plans = JSON.parse(el.getAttribute('data-payload'));
+
   el.removeAttribute('data-plan');
   el.removeAttribute('data-payload');
 
   new Vue({
     el,
     data: () => ({
-      plan,
-      planTerm: plan.minDuration,
+      currency: "$",
+      plans,
+      planTerm: plans.usd.minDuration,
+      // planTerm: plan.minDuration,
       deposit: 0,
       isRulesAccepted: false
     }),
 
     computed: {
+      plan() {
+        if (this.currency === "$") {
+          return this.plans.usd;
+        } else {
+          return this.plans.btc;
+        }
+      },
+
+      minInvestBitcoin() {
+        return (this.plan.minInvest).toFixed(8);
+      },
+
+      maxInvestBitcoin() {
+        return (this.plan.maxInvest).toFixed(8);
+      },
+
       isDepositCorrect() {
         return this.deposit >= this.plan.minInvest && this.deposit <= this.plan.maxInvest;
       },
+
       totalProfit() {
         const totalProfitRaw = this.deposit * this.planTerm * this.plan.profit;
         const totalProfit = this.plan.bodyReturn ? totalProfitRaw + this.deposit : totalProfitRaw
-        return totalProfit.toFixed(0);
+        if (this.currency === "$") {
+          return totalProfit.toFixed(0);
+        } else {
+          return totalProfit.toFixed(10);
+        }
       },
+
       isAllFieldsVerified() {
         return this.isDepositCorrect && this.isRulesAccepted;
       },
+
       someFieldsIncorrect() {
         return !this.isAllFieldsVerified;
       }
     },
 
     methods: {
-    makeDeposit() {
+      makeDeposit() {
         let popup = document.querySelector('.popup');
         popup.style.display = "flex";
         document.querySelector('.popup__btn-close').addEventListener("click", function () {
@@ -41,7 +68,44 @@ document.querySelectorAll('[data-plan="calculator"]').forEach(el => {
         document.querySelector('.overlay').addEventListener("click", function () {
           popup.style.display = "none";
         }.bind(this));
+      },
+
+      chooseCurrency(event) {
+        this.deposit = 0;
+        this.planTerm = this.plan.minDuration;
+
+        let currencyLabels = event.target.closest('.plan__currencies').children;
+
+        for (var i=0, child; child=currencyLabels[i]; i++) {
+          child.classList.remove('selected');
+        }
+        event.target.parentNode.classList.add('selected');
+      },
+
+      indicateCurrencySymbol(input, spans) {
+        if (input.checked) {
+          spans.forEach(span => {
+            span.innerHTML = "₿";
+          });
+        } else {
+          spans.forEach(span => {
+            span.innerHTML = "$";
+          });
+        }
+      },
+
+      convertToDecimal(event) {
+        console.log('Value: ', event.target.value);
+        // event.target.value = parseFloat(event.target.value);
+        // event.target.value = (event.target.value).toFixed(8);
+        event.target.value = "0.0000000" + String(event.target.value).charAt(0);
+      },
+
+      convertDecimal(event) {
+        console.log('Value при потере фокуса: ', event.target.value);
+        event.target.value = String(event.target.value);
       }
+
     }
 
   });

@@ -4,32 +4,52 @@ section.plans__section
   ul.plans__list
     - for(let i = 0; i < 2; i += 1)
       -
-        let plan = {
-          title: faker.commerce.product(),
-          minInvest: _.random(100, 1000),
-          maxInvest: _.random(3000, 10000),
-          profit: _.sample([0.07, 0.02, 0.01, 0.09]),
-          bodyReturn:  Math.random() >= 0.5,
-          minDuration: _.random(10, 30),
-          maxDuration: _.random(50, 120)
-        };
+        let plans = {
+          usd: {
+            title: faker.commerce.product(),
+            minInvest: _.random(100, 1000),
+            maxInvest: _.random(3000, 10000),
+            profit: _.sample([0.07, 0.02, 0.01, 0.09]),
+            bodyReturn:  Math.random() >= 0.5,
+            minDuration: _.random(10, 30),
+            maxDuration: _.random(50, 120)
+          },
+          btc: {
+            title: faker.commerce.product(),
+            minInvest: _.sample([0.00000001, 0.00000002, 0.00000003, 0.00000004]),
+            maxInvest: _.sample([0.00000006, 0.00000007, 0.00000008, 0.00000009]),
+            profit: _.sample([0.07, 0.02, 0.01, 0.09]),
+            bodyReturn:  Math.random() >= 0.5,
+            minDuration: _.random(10, 30),
+            maxDuration: _.random(50, 120)
+          }
+        };  
+      
       li.plans__item(
         data-plan="calculator"
-        data-payload=plan
+        data-payload=plans
         v-cloak
       )
         .plan
           .plan__header
-            h3 {{plan.title}}
+            .plan__title
+              h3 {{plan.title}}
+            .plan__currencies
+              label.plan__currency.selected $
+                input(type="radio" value="$" v-model="currency" @change="chooseCurrency($event)" checked)              
+              label.plan__currency ₿
+                input(type="radio" value="₿" v-model="currency" @change="chooseCurrency($event)")
           .plan__desc   
             .plan__row
               .plan__feature
                 span Минимальный
-              .plan__value ${{plan.minInvest}}
+              .plan__value(v-if="currency === '$'") {{currency}} {{plan.minInvest}}
+              .plan__value(v-else) {{currency}} {{minInvestBitcoin}}
             .plan__row
               .plan__feature
                 span Максимальный
-              .plan__value ${{plan.maxInvest}}
+              .plan__value(v-if="currency === '$'") {{currency}} {{plan.maxInvest}}
+              .plan__value(v-else) {{currency}} {{maxInvestBitcoin}}
             .plan__row
               .plan__feature
                 span Прибыль
@@ -59,26 +79,37 @@ section.plans__section
             .plan__deposit
               .plan__row
                 .plan__feature
-                  span Вклад в $
+                  span Вклад в {{currency}}
                 .plan__value
                   input(
+                    v-if="currency === '$'"
                     type="number"
                     :min="plan.minInvest"
                     :max="plan.maxInvest"
                     step="1"
                     v-model.number="deposit"
                   ).plan__deposit-input
-                  p(v-if="isDepositCorrect").small-text Сумма вклада корректна
+                  input(
+                    v-else
+                    type="number"
+                    :min="minInvestBitcoin"
+                    :max="maxInvestBitcoin"
+                    step="0.00000001"
+                    v-model.number="deposit"
+                    @change="convertToDecimal($event)"
+                    @blur="convertDecimal($event)"
+                  ).plan__deposit-input
+                  p(v-if="isDepositCorrect").small-text Сумма вклада корректна {{deposit}}
                   p(v-else).small-text *Введите корректную сумму
             .plan__profit
               h4 Суммарная прибыль составит:
               //- p {{profit}}
-              .plan__profit-input(v-if="isDepositCorrect") ${{totalProfit}}
-              .plan__profit-input(v-else) $0
+              .plan__profit-input(v-if="isDepositCorrect") {{currency}} {{totalProfit}}
+              .plan__profit-input(v-else) {{currency}} 0
               //- input(type="text" value=profit).plan__profit-input
             input(type="checkbox" v-model="isRulesAccepted").plan__consent
             label.plan__consent-label Согласен с 
               a(href="#") правилами
             button(type='submit' :disabled="someFieldsIncorrect" @click="makeDeposit").btn Инвестировать
             p(v-if="someFieldsIncorrect").small-text *Введите корректную сумму и согласитесь с правилами.
-            p(v-else).small-text Нажмите кнопку, чтобы сделать вклад и получить ${{totalProfit}} прибыли!
+            p(v-else).small-text Нажмите кнопку, чтобы сделать вклад и получить {{currency}} {{totalProfit}} прибыли!
