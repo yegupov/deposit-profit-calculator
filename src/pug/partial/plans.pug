@@ -95,11 +95,10 @@ section.plans__section
                     :min="minInvestBitcoin"
                     :max="maxInvestBitcoin"
                     step="0.00000001"
-                    v-model.number="deposit"
+                    v-model.text="deposit"
                     @change="convertToDecimal($event)"
-                    @blur="convertDecimal($event)"
                   ).plan__deposit-input
-                  p(v-if="isDepositCorrect").small-text Сумма вклада корректна {{deposit}}
+                  p(v-if="isDepositCorrect").small-text Сумма вклада корректна
                   p(v-else).small-text *Введите корректную сумму
             .plan__profit
               h4 Суммарная прибыль составит:
