@@ -100,6 +100,7 @@ section.plans__section
                     step="0.00000001"
                     v-model="deposit"
                     :class="{error: !isDepositCorrect}"
+                    @change="convertToDecimal($event)"
                   ).plan__deposit-input
                   p(v-if="isDepositCorrect").small-text Сумма вклада корректна
                   p(v-else).small-text *Введите корректную сумму

@@ -92,6 +92,13 @@ document.querySelectorAll('[data-plan="calculator"]').forEach(el => {
             span.innerHTML = "$";
           });
         }
+      },
+
+      convertToDecimal(event) {
+        console.log('typeof Value: ', typeof event.target.value);
+        // event.target.value = parseFloat(event.target.value);
+        // event.target.value = (event.target.value).toFixed(8);
+        // event.target.value = "0.0000000" + String(event.target.value).charAt(0);
       }
 
     }
