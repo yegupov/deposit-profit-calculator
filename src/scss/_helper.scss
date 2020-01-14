@@ -168,3 +168,7 @@ $lower-background: linear-gradient(to bottom, $lower-color, $lower-color) 100% 5
     background-color: $thumb-hover-color;
   }
 }
+
+.error {
+  border: 1px solid #ff912b !important;
+}

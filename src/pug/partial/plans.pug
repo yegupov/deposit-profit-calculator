@@ -78,8 +78,11 @@ section.plans__section
                 .plan__slider-value {{plan.maxDuration}}
             .plan__deposit
               .plan__row
-                .plan__feature
+                .plan__feature(v-if="currency === '$'")
                   span Вклад в {{currency}}
+                .plan__feature(v-else)
+                  span Вклад в {{currency}}
+                  span.small-text (через точку)
                 .plan__value
                   input(
                     v-if="currency === '$'"
@@ -91,12 +94,12 @@ section.plans__section
                   ).plan__deposit-input
                   input(
                     v-else
-                    type="number"
+                    type="text"
                     :min="minInvestBitcoin"
                     :max="maxInvestBitcoin"
                     step="0.00000001"
-                    v-model.text="deposit"
-                    @change="convertToDecimal($event)"
+                    v-model="deposit"
+                    :class="{error: !isDepositCorrect}"
                   ).plan__deposit-input
                   p(v-if="isDepositCorrect").small-text Сумма вклада корректна
                   p(v-else).small-text *Введите корректную сумму

@@ -92,10 +92,6 @@ document.querySelectorAll('[data-plan="calculator"]').forEach(el => {
             span.innerHTML = "$";
           });
         }
-      },
-
-      convertToDecimal(event) {
-        event.target.value = "0.0000000" + String(event.target.value).charAt(0);
       }
 
     }

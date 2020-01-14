@@ -13,7 +13,7 @@
         <h2 class="section-title">Сделайте вклад и получите прибыль до 17%!</h2>
         <p class="secondary-text">Выберите индивидуальный план вклада и узнайте размер прибыли!</p>
         <ul class="plans__list">
-            <li class="plans__item" data-plan="calculator" data-payload="{&quot;usd&quot;:{&quot;title&quot;:&quot;Pants&quot;,&quot;minInvest&quot;:184,&quot;maxInvest&quot;:3036,&quot;profit&quot;:0.02,&quot;bodyReturn&quot;:false,&quot;minDuration&quot;:10,&quot;maxDuration&quot;:92},&quot;btc&quot;:{&quot;title&quot;:&quot;Computer&quot;,&quot;minInvest&quot;:4e-8,&quot;maxInvest&quot;:6e-8,&quot;profit&quot;:0.07,&quot;bodyReturn&quot;:true,&quot;minDuration&quot;:22,&quot;maxDuration&quot;:65}}" v-cloak>
+            <li class="plans__item" data-plan="calculator" data-payload="{&quot;usd&quot;:{&quot;title&quot;:&quot;Bacon&quot;,&quot;minInvest&quot;:944,&quot;maxInvest&quot;:5241,&quot;profit&quot;:0.09,&quot;bodyReturn&quot;:true,&quot;minDuration&quot;:21,&quot;maxDuration&quot;:102},&quot;btc&quot;:{&quot;title&quot;:&quot;Chips&quot;,&quot;minInvest&quot;:4e-8,&quot;maxInvest&quot;:8e-8,&quot;profit&quot;:0.02,&quot;bodyReturn&quot;:true,&quot;minDuration&quot;:22,&quot;maxDuration&quot;:93}}" v-cloak>
                 <div class="plan">
                     <div class="plan__header">
                         <div class="plan__title">
@@ -53,8 +53,9 @@
                         </div>
                         <div class="plan__deposit">
                             <div class="plan__row">
-                                <div class="plan__feature"><span>Вклад в {{currency}}</span></div>
-                                <div class="plan__value"><input class="plan__deposit-input" v-if="currency === '$'" type="number" :min="plan.minInvest" :max="plan.maxInvest" step="1" v-model.number="deposit"><input class="plan__deposit-input" v-else type="number" :min="minInvestBitcoin" :max="maxInvestBitcoin" step="0.00000001" v-model.text="deposit" @change="convertToDecimal($event)">
+                                <div class="plan__feature" v-if="currency === '$'"><span>Вклад в {{currency}}</span></div>
+                                <div class="plan__feature" v-else><span>Вклад в {{currency}}</span><span class="small-text">(через точку)</span></div>
+                                <div class="plan__value"><input class="plan__deposit-input" v-if="currency === '$'" type="number" :min="plan.minInvest" :max="plan.maxInvest" step="1" v-model.number="deposit"><input class="plan__deposit-input" v-else type="text" :min="minInvestBitcoin" :max="maxInvestBitcoin" step="0.00000001" v-model="deposit" :class="{error: !isDepositCorrect}">
                                     <p class="small-text" v-if="isDepositCorrect">Сумма вклада корректна</p>
                                     <p class="small-text" v-else>*Введите корректную сумму</p>
                                 </div>
@@ -70,7 +71,7 @@
                     </div>
                 </div>
             </li>
-            <li class="plans__item" data-plan="calculator" data-payload="{&quot;usd&quot;:{&quot;title&quot;:&quot;Table&quot;,&quot;minInvest&quot;:450,&quot;maxInvest&quot;:3502,&quot;profit&quot;:0.09,&quot;bodyReturn&quot;:false,&quot;minDuration&quot;:21,&quot;maxDuration&quot;:54},&quot;btc&quot;:{&quot;title&quot;:&quot;Pizza&quot;,&quot;minInvest&quot;:3e-8,&quot;maxInvest&quot;:6e-8,&quot;profit&quot;:0.07,&quot;bodyReturn&quot;:true,&quot;minDuration&quot;:21,&quot;maxDuration&quot;:87}}" v-cloak>
+            <li class="plans__item" data-plan="calculator" data-payload="{&quot;usd&quot;:{&quot;title&quot;:&quot;Keyboard&quot;,&quot;minInvest&quot;:316,&quot;maxInvest&quot;:8666,&quot;profit&quot;:0.02,&quot;bodyReturn&quot;:true,&quot;minDuration&quot;:29,&quot;maxDuration&quot;:79},&quot;btc&quot;:{&quot;title&quot;:&quot;Pizza&quot;,&quot;minInvest&quot;:3e-8,&quot;maxInvest&quot;:9e-8,&quot;profit&quot;:0.09,&quot;bodyReturn&quot;:false,&quot;minDuration&quot;:21,&quot;maxDuration&quot;:63}}" v-cloak>
                 <div class="plan">
                     <div class="plan__header">
                         <div class="plan__title">
@@ -110,8 +111,9 @@
                         </div>
                         <div class="plan__deposit">
                             <div class="plan__row">
-                                <div class="plan__feature"><span>Вклад в {{currency}}</span></div>
-                                <div class="plan__value"><input class="plan__deposit-input" v-if="currency === '$'" type="number" :min="plan.minInvest" :max="plan.maxInvest" step="1" v-model.number="deposit"><input class="plan__deposit-input" v-else type="number" :min="minInvestBitcoin" :max="maxInvestBitcoin" step="0.00000001" v-model.text="deposit" @change="convertToDecimal($event)">
+                                <div class="plan__feature" v-if="currency === '$'"><span>Вклад в {{currency}}</span></div>
+                                <div class="plan__feature" v-else><span>Вклад в {{currency}}</span><span class="small-text">(через точку)</span></div>
+                                <div class="plan__value"><input class="plan__deposit-input" v-if="currency === '$'" type="number" :min="plan.minInvest" :max="plan.maxInvest" step="1" v-model.number="deposit"><input class="plan__deposit-input" v-else type="text" :min="minInvestBitcoin" :max="maxInvestBitcoin" step="0.00000001" v-model="deposit" :class="{error: !isDepositCorrect}">
                                     <p class="small-text" v-if="isDepositCorrect">Сумма вклада корректна</p>
                                     <p class="small-text" v-else>*Введите корректную сумму</p>
                                 </div>
