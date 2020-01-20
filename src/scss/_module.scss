@@ -2,17 +2,30 @@
   .secondary-text {
     width: 28%;
     margin: 0 auto 25px;
+    @include respondTo(tablet, max) {
+      width: 70%;
+    }
   }
 }
 
 .plans__list {
   @extend %flexbox;
   margin: 40px 0;
+  @include respondTo(tablet, max) {
+    flex-wrap: wrap;
+  }
   .plans__item {
     flex-basis: 45%;
     margin-right: 10%;
+    @include respondTo(tablet, max) {
+      flex-basis: 85%;
+      margin: 0 auto 50px;
+    }
     &:last-child {
       margin-right: 0;
+      @include respondTo(tablet, max) {
+        margin: 0 auto;
+      }
     }
   }
 }
@@ -209,6 +222,9 @@
   padding: 40px 8%;
   background-color: #fff;
   text-align: center;
+  @include respondTo(tablet, max) {
+    width: 75vw;
+  }
 }
 
 .popup__btn-close {
