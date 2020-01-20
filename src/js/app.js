@@ -40,8 +40,8 @@ document.querySelectorAll('[data-plan="calculator"]').forEach(el => {
       },
 
       totalProfit() {
-        const totalProfitRaw = this.deposit * this.planTerm * this.plan.profit;
-        const totalProfit = this.plan.bodyReturn ? totalProfitRaw + this.deposit : totalProfitRaw
+        const totalProfitRaw = parseFloat(this.deposit) * this.planTerm * this.plan.profit;
+        const totalProfit = this.plan.bodyReturn ? totalProfitRaw + parseFloat(this.deposit) : totalProfitRaw
         if (this.currency === "$") {
           return totalProfit.toFixed(0);
         } else {
